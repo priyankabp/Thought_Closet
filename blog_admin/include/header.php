@@ -7,7 +7,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Thought Closet Admin</a>
+            <a class="navbar-brand" href="index.php">Thought Closet Admin</a>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">

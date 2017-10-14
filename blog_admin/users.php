@@ -1,4 +1,4 @@
-hemml<?php require_once('include/top.php'); ?>
+<?php require_once('include/top.php'); ?>
   </head>
   <body>
     <div id="wrapper">
