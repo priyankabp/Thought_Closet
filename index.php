@@ -18,34 +18,49 @@
         <div class="row">
 
           <div class="col-md-8">
+            <?php 
+              $slider_query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC LIMIT 5";
+              $slider_run = mysqli_query($connection,$slider_query);
+              if (mysqli_num_rows($slider_run) > 0) { #IF open
+                $count = mysqli_num_rows($slider_run);
+              ?>
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
-                  <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                  <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                  <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                  <?php
+                    for ($i=0;$i < $count; $i++) { 
+                      if ($i==0) {
+                        echo "<li data-target='#carousel-example-generic' data-slide-to=".$i." class='active'></li>";
+                      }
+                      else{
+                        echo "<li data-target='#carousel-example-generic' data-slide-to=".$i."'></li>";
+                      }
+                    }
+                  ?>
                 </ol>
 
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
-                  <div class="item active">
-                    <img src="images/slider-img1.jpg" alt="Slider 1">
+                  <?php 
+                    $check = 0;
+                    while ($slider_row = mysqli_fetch_array($slider_run)) {
+                      $slider_id = $slider_row['id'];
+                      $slider_image = $slider_row['image'];
+                      $slider_title = $slider_row['title'];
+                      $check = $check +1;
+                      if ($check==1) {
+                        echo "<div class='item active'>";
+                      }
+                      else{
+                        echo "<div class='item'>";
+                      }
+                  ?>
+                    <a href="post.php?post_id=<?php echo $slider_id; ?>"><img src="images/<?php echo $slider_image; ?>" alt="Slider 1"></a>
                     <div class="carousel-caption">
-                      This is heading for slider 1
+                      <h2><?php echo $slider_title; ?></h2>
                     </div>
                   </div>
-                  <div class="item">
-                    <img src="images/slider-img2.jpg" alt="Slider 2">
-                    <div class="carousel-caption">
-                      This is heading for slider 2
-                    </div>
-                  </div>
-                  <div class="item">
-                    <img src="images/slider-img3.jpg" alt="Slider 3">
-                    <div class="carousel-caption">
-                      This is heading for slider 3
-                    </div>
-                  </div>
+              <?php } ?>
                 </div>
 
                 <!-- Controls -->
@@ -60,7 +75,8 @@
             </div>
 
             <?php 
-              $query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC";
+              }# IF close
+              $query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC LIMIT 3";
               $run = mysqli_query($connection,$query);
               if (mysqli_num_rows($run) > 0) {
                 while($row = mysqli_fetch_array($run)){
