@@ -2,6 +2,31 @@
   </head>
   <body>
     <?php require_once('include/header.php');?>
+
+    <?php
+      if (isset($_GET['post_id'])) {
+        $post_id = $_GET['post_id'];
+        $query = "SELECT * FROM posts WHERE status = 'publish' and id = $post_id";
+        $run = mysqli_query($connection,$query);
+        if(mysqli_num_rows($run) > 0){
+          $row = mysqli_fetch_array($run);
+          $id = $row['id'];
+          $date = getdate($row['date']);
+          $day = $date['mday'];
+          $month = $date['month'];
+          $year = $date['year'];
+          $title = $row['title'];
+          $author = $row['author'];
+          $author_image = $row['author_image'];
+          $image = $row['image'];
+          $categories = $row['categories'];
+          $post_data = $row['post_data'];
+        }
+        else{
+          header('Location : index.php');
+        }
+      }
+    ?>
     <div class="jumbotron">
       <div class="container">
         <div id="details" class="animated fadeInLeft">
@@ -20,31 +45,27 @@
             <div class="post">
               <div class="row">
                 <div class="col-md-2 post-date" >
-                   <div class="day">12</div>
-                   <div class="month">October</div>
-                   <div class="year">2017</div>
+                   <div class="day"><?php echo $day;?></div>
+                   <div class="month"><?php echo $month;?></div>
+                   <div class="year"><?php echo $year;?></div>
                 </div>
 
                 <div class="col-md-8 post-title">
-                   <a href="#"><h2>This is demo heading for post one...</h2></a>
-                   <p>Written by : <span> Priyanka</span></p>
+                   <a href="post.php?post_id=<?php echo $id;?>"><h2><?php echo $title;?></h2></a>
+                   <p>Written by : <span> <?php echo ucfirst($author);?></span></p>
                 </div>
 
                 <div class="col-md-2 profile-picture">
-                   <img src="images/profile-picture.jpg" alt="Profile Picture" class="img-circle">
+                   <img src="images/<?php echo $author_image;?>" alt="Profile Picture" class="img-circle">
                 </div>
               </div>
-              <a href="#"><img src="images/slider-img1" alt="Post Image"></a>
+              <a href="images/<?php echo $image;?>"><img src="images/<?php echo $image;?>" alt="Post Image"></a>
               <p class="description">
-                What is Lorem Ipsum?
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br><br>
-
-                Why do we use it?
-                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).<br><br>
+                 <?php echo $post_data;?>
               </p>
               <div class="bottom">
                 <span class="category">
-                  <i class="fa fa-folder-open" aria-hidden="true"></i><a href="#"> Category</a>
+                  <i class="fa fa-folder-open" aria-hidden="true"></i><a href="#"> <?php echo ucfirst($categories);?></a>
                 </span>|
                 <span class="comment">
                   <i class="fa fa-comment" aria-hidden="true"></i><a href="#"> Comment</a>
