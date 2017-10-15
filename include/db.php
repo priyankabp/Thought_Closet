@@ -2,7 +2,7 @@
 
 	$db['db_host'] = 'localhost';
 	$db['db_user'] = 'root';
-	$db['db_password'] = '';
+	$db['db_password'] = 'PriyaMysql91';
 	$db['db_name'] = 'cms';
 
 	foreach ($db as $key => $value) {

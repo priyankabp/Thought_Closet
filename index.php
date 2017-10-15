@@ -1,7 +1,20 @@
 <?php require_once('include/top.php');?>
   </head>
   <body>
-    <?php require_once('include/header.php');?>
+    <?php require_once('include/header.php');
+      $number_of_posts = 3;
+      if(isset($_GET['page'])){
+        $page_id = $_GET['page'];
+      }
+      else{
+        $page_id = 1;
+      }
+      $all_posts_query = "SELECT * FROM posts where status='publish'";
+      $all_posts_run = mysqli_query($connection,$all_posts_query);
+      $all_posts = mysqli_num_rows($all_posts_run);
+      $total_pages = ceil($all_posts/$number_of_posts);
+      $posts_start_from = ($page_id - 1) * $number_of_posts;
+    ?>
 
     <div class="jumbotron">
       <div class="container">
@@ -19,7 +32,7 @@
 
           <div class="col-md-8">
             <?php 
-              $slider_query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC LIMIT 5";
+              $slider_query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC LIMIT $number_of_posts";
               $slider_run = mysqli_query($connection,$slider_query);
               if (mysqli_num_rows($slider_run) > 0) { #IF open
                 $count = mysqli_num_rows($slider_run);
@@ -76,7 +89,7 @@
 
             <?php 
               }# IF close
-              $query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC LIMIT 3";
+              $query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC LIMIT $posts_start_from, $number_of_posts";
               $run = mysqli_query($connection,$query);
               if (mysqli_num_rows($run) > 0) {
                 while($row = mysqli_fetch_array($run)){
@@ -137,21 +150,11 @@
 
             <nav aria-label="Page navigation" id="pagination">
               <ul class="pagination">
-                <li>
-                  <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                  <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
+                <?php
+                  for ($i=1; $i <= $total_pages; $i++) { 
+                    echo "<li class='".($page_id == $i ? 'active':' ')."'><a href='index.php?page=".$i."'>$i</a></li>";
+                  }
+                ?>
               </ul>
             </nav>
           </div>
