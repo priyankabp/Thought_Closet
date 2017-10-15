@@ -73,43 +73,43 @@
               </div>
             </div>
 
+            <!--Related Posts changed to dynamic on Single post page-->
             <div class="related-posts">
               <h3>Related Posts</h3><hr>
               <div class="row">
-                <div class="col-sm-4">
-                  <a href="#">
-                    <img src="images/slider-img1.jpg" alt="">
-                    <h4>This is heading for post one. We can add some more here</h4>
-                  </a>
-                </div>
-                <div class="col-sm-4">
-                  <a href="#">
-                    <img src="images/slider-img2.jpg" alt="">
-                    <h4>This is heading for post one. We can add some more here</h4>
-                  </a>
-                </div>
-                <div class="col-sm-4">
-                  <a href="#">
-                    <img src="images/slider-img3.jpg" alt="">
-                    <h4>This is heading for post one. We can add some more here</h4>
-                  </a>
-                </div>
+                <?php
+                  $rp_query = "SELECT * FROM posts WHERE status = 'publish' AND title LIKE '%$title%' LIMIT 3";
+                  $rp_run = mysqli_query($connection,$rp_query);
+                  while ($rp_row = mysqli_fetch_array($rp_run)) {
+                    $rp_id = $rp_row['id'];
+                    $rp_title = $rp_row['title'];
+                    $rp_image = $rp_row['image'];
+                ?>
+                  <div class="col-sm-4">
+                    <a href="post.php?post_id=<?php echo $rp_id;?>">
+                      <img src="images/<?php echo $rp_image;?>" alt="">
+                      <h4><?php echo $rp_title;?></h4>
+                    </a>
+                  </div>
+                <?php } ?>
               </div>
             </div>
 
+            <!-- Details of Author on the Post on Single post page-->
             <div class="author">
               <div class="row">
                 <div class="col-sm-3">
-                  <img src="images/profile-picture.jpg" alt="Profile Picture" class="img-circle">
+                  <img src="images/<?php echo $author_image;?>" alt="Profile Picture" class="img-circle">
                 </div>
                 <div class="col-sm-9">
-                  <h4>Priyanka</h4>
+                  <h4><?php echo ucfirst($author);?></h4>
                   <p>What is Lorem Ipsum?
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
                 </div>
               </div>
             </div>
 
+            <!-- Comments on the Post on Single post page-->
             <div class="comments">
               <h3>Comments</h3><hr>
               <div class="row single-comment">
@@ -133,6 +133,7 @@
               </div>
             </div>
 
+            <!-- Add new comments on the Post on Single post page-->
             <div class="comment-box">
               <div class="row">
                 <div class="col-xs-12">
