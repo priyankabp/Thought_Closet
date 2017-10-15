@@ -2,6 +2,8 @@
   </head>
   <body>
     <?php require_once('include/header.php');
+
+      #Pageination--Start
       $number_of_posts = 3;
       if(isset($_GET['page'])){
         $page_id = $_GET['page'];
@@ -10,10 +12,23 @@
         $page_id = 1;
       }
       $all_posts_query = "SELECT * FROM posts where status='publish'";
+      if (isset($category_name)) {
+        $all_posts_query .= " and categories = '$category_name'";
+      }
       $all_posts_run = mysqli_query($connection,$all_posts_query);
       $all_posts = mysqli_num_rows($all_posts_run);
       $total_pages = ceil($all_posts/$number_of_posts);
       $posts_start_from = ($page_id - 1) * $number_of_posts;
+      #Pagination--End
+
+      # Read Categories data from database, filer the posts and navigate to them from header menu
+      if(isset($_GET['category'])){
+        $category_id = $_GET['category'];
+        $category_query = "SELECT * FROM categories WHERE id = $category_id";
+        $category_run = mysqli_query($connection,$category_query);
+        $category_row = mysqli_fetch_array($category_run);
+        $category_name = $category_row['category'];
+      }
     ?>
 
     <div class="jumbotron">
@@ -89,7 +104,11 @@
 
             <?php 
               }# IF close
-              $query = "SELECT * FROM posts WHERE status='publish' ORDER BY id DESC LIMIT $posts_start_from, $number_of_posts";
+              $query = "SELECT * FROM posts WHERE status='publish'";
+              if (isset($category_name)) {
+                $query .= "and categories = '$category_name'";
+              }
+              $query .= " ORDER BY id DESC LIMIT $posts_start_from, $number_of_posts";
               $run = mysqli_query($connection,$query);
               if (mysqli_num_rows($run) > 0) {
                 while($row = mysqli_fetch_array($run)){
@@ -152,7 +171,7 @@
               <ul class="pagination">
                 <?php
                   for ($i=1; $i <= $total_pages; $i++) { 
-                    echo "<li class='".($page_id == $i ? 'active':' ')."'><a href='index.php?page=".$i."'>$i</a></li>";
+                    echo "<li class='".($page_id == $i ? 'active':' ')."'><a href='index.php?page=".$i."&".(isset($category_name)?"category=$category_id":" ")."'>$i</a></li>";
                   }
                 ?>
               </ul>
