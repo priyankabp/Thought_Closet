@@ -11,15 +11,29 @@
       else{
         $page_id = 1;
       }
-      $all_posts_query = "SELECT * FROM posts where status='publish'";
-      if (isset($category_name)) {
-        $all_posts_query .= " and categories = '$category_name'";
+
+      # If condition if the user searches posts using search menu.
+      if (isset($_POST['search'])) {
+        $search = $_POST['search-title'];
+        $all_posts_query = "SELECT * FROM posts where status='publish'";
+        $all_posts_query .= " and tags LIKE '%$search%'";
+        $all_posts_run = mysqli_query($connection,$all_posts_query);
+        $all_posts = mysqli_num_rows($all_posts_run);
+        $total_pages = ceil($all_posts/$number_of_posts);
+        $posts_start_from = ($page_id - 1) * $number_of_posts;
+        #Pagination Ends for if posts are obtained from search menu
       }
-      $all_posts_run = mysqli_query($connection,$all_posts_query);
-      $all_posts = mysqli_num_rows($all_posts_run);
-      $total_pages = ceil($all_posts/$number_of_posts);
-      $posts_start_from = ($page_id - 1) * $number_of_posts;
-      #Pagination--End
+      else{
+        $all_posts_query = "SELECT * FROM posts where status='publish'";
+        if (isset($category_name)) {
+          $all_posts_query .= " and categories = '$category_name'";
+        }
+        $all_posts_run = mysqli_query($connection,$all_posts_query);
+        $all_posts = mysqli_num_rows($all_posts_run);
+        $total_pages = ceil($all_posts/$number_of_posts);
+        $posts_start_from = ($page_id - 1) * $number_of_posts;
+        #Pagination--End for posts from normal or specific categories
+      }
 
       # Read Categories data from database, filer the posts and navigate to them from header menu
       if(isset($_GET['category'])){
@@ -104,11 +118,27 @@
 
             <?php 
               }# IF close
-              $query = "SELECT * FROM posts WHERE status='publish'";
-              if (isset($category_name)) {
-                $query .= "and categories = '$category_name'";
+
+              if (isset($_POST['search'])) {
+                $search = $_POST['search-title'];
+                # Query to fetch posts from the database
+                $query = "SELECT * FROM posts WHERE status='publish'";
+                # this works to match search words with tags in the database and gets posts according to tags
+                $query .= "and tags LIKE '%$search%'";
+                # Quesry to continue and adjust pagination
+                $query .= " ORDER BY id DESC LIMIT $posts_start_from, $number_of_posts";
               }
-              $query .= " ORDER BY id DESC LIMIT $posts_start_from, $number_of_posts";
+              else{
+                # Query to fetch posts from the database
+                $query = "SELECT * FROM posts WHERE status='publish'";
+                if (isset($category_name)) {
+                  # this works to filter posts according to categories
+                  $query .= "and categories = '$category_name'";
+                }
+                # Quesry to continue and adjust pagination
+                $query .= " ORDER BY id DESC LIMIT $posts_start_from, $number_of_posts";
+              }
+
               $run = mysqli_query($connection,$query);
               if (mysqli_num_rows($run) > 0) {
                 while($row = mysqli_fetch_array($run)){

@@ -1,11 +1,13 @@
 <div class="widgets">
+            <form action="index.php" method="post"><!-- Adding thisto activate search option -->
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" name="search-title" class="form-control" placeholder="Search for...">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
+                    <input type="submit" name="search" value="Go!" class="btn btn-default">
                   </span>
               </div><!-- /input-group -->
-            </div><!-- widgets closed -->
+            </form>
+          </div><!-- widgets closed -->
 
             <div class="widgets"><!-- Popular Posts widgets open -->
               <div class="popular">
