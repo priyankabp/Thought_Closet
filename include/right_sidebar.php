@@ -89,20 +89,50 @@
                 <div class="row">
                 <div class="col-xs-6">
                   <ul>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
+                    <?php 
+                      $category_query = "SELECT * FROM categories";
+                      $category_run = mysqli_query($connection,$category_query);
+                      if(mysqli_num_rows($category_run) > 0){
+                        $count = 2;
+                        while ($category_row = mysqli_fetch_array($category_run)) {
+                          $category_id = $category_row['id'];
+                          $category_category = $category_row['category'];
+                          $count = $count+1;
+
+                          if (($count %2)==1) {
+                            echo "<li><a href='index.php?category=".$category_id."'>".(ucfirst($category_category))."</a></li>";
+                          }
+                          
+                        }
+                      }
+                      else{
+                        echo "<p>No Category</p>";
+                      }
+                    ?>
                   </ul>
                 </div>
                 <div class="col-xs-6">
                   <ul>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
-                    <li><a href="">category</a></li>
+                    <?php 
+                      $category_query = "SELECT * FROM categories";
+                      $category_run = mysqli_query($connection,$category_query);
+                      if(mysqli_num_rows($category_run) > 0){
+                        $count = 2;
+                        while ($category_row = mysqli_fetch_array($category_run)) {
+                          $category_id = $category_row['id'];
+                          $category_category = $category_row['category'];
+                          $count = $count+1;
+
+                          if (($count %2)==0) {
+                            echo "<li><a href='index.php?category=".$category_id."'>".(ucfirst($category_category))."</a></li>";
+                          }
+                          
+                        }
+                      }
+                      else{
+                        echo "<p>No Category</p>";
+                      }
+                    ?>
                   </ul>
                 </div>
               </div>
@@ -116,26 +146,26 @@
                 <hr>
                 <div class="row">
                   <div class="col-xs-4">
-                    <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
+                    <a href="https://www.facebook.com"><img src="images/facebook.png" alt="Facebook"></a>
                   </div>
                   <div class="col-xs-4">
-                    <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+                    <a href="https://twitter.com/"><img src="images/twitter.png" alt="Twitter"></a>
                   </div>
                   <div class="col-xs-4">
-                    <a href="#"><img src="images/googleplus.png" alt="Google Plus"></a>
+                    <a href="https://plus.google.com/discover"><img src="images/googleplus.png" alt="Google Plus"></a>
                   </div>
                 </div>
 
                 <hr>
                 <div class="row">
                   <div class="col-xs-4">
-                    <a href="#"><img src="images/linkedin.png" alt="LinkedIn"></a>
+                    <a href="https://www.linkedin.com/"><img src="images/linkedin.png" alt="LinkedIn"></a>
                   </div>
                   <div class="col-xs-4">
-                    <a href="#"><img src="images/skype.png" alt="Skype"></a>
+                    <a href="https://www.skype.com/en/"><img src="images/skype.png" alt="Skype"></a>
                   </div>
                   <div class="col-xs-4">
-                    <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+                    <a href="https://www.youtube.com/"><img src="images/youtube.png" alt="YouTube"></a>
                   </div>
                 </div>
               </div>
