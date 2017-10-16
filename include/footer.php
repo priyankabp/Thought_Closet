@@ -1,7 +1,7 @@
 	<footer>
 	     <div class="container">
 	        Copyright &copy; by <a href="https://www.linkedin.com/in/priyankaphapale/"> Priyanka Phapale</a>
-	        All Rights Reserved from 2017 - 2027
+	        All Rights Reserved from 2017 - <?php echo date('Y');?>.
 	     </div>
 	</footer>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

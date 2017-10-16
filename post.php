@@ -157,6 +157,10 @@
                   $cs_query = "INSERT INTO `cms`.`comments` (`date`, `name`, `username`, `post_id`, `email`, `website`, `image`, `comment`, `status`) VALUES ('$cs_date', '$cs_name', 'user', '$post_id', '$cs_email', '$cs_website', 'unknown-profile.png', '$cs_comment','pending')";
                   if(mysqli_query($connection,$cs_query)){
                     $msg = "Comment submitted and waiting for approval";
+                    $cs_name = "";
+                    $cs_email = "";
+                    $cs_website = "";
+                    $cs_comment = "";
                   }
                   else{
                     $error_msg = "Comment has not been submitted";
@@ -170,22 +174,22 @@
                   <form action="" method="post">
                     <div class="form-group">
                       <label for="fullname">Full Name:*</label>
-                      <input type="text" name="name" id="fullname" class="form-control" placeholder="Full Name">
+                      <input type="text" value="<?php if(isset($cs_name)){echo $cs_name;}?>" name="name" id="fullname" class="form-control" placeholder="Full Name">
                     </div>
 
                     <div class="form-group">
                       <label for="email">Email Address:*</label>
-                      <input type="text" name="email" id="email" class="form-control" placeholder="Email">
+                      <input type="text" value="<?php if(isset($cs_email)){echo $cs_email;}?>" name="email" id="email" class="form-control" placeholder="Email">
                     </div>
 
                     <div class="form-group">
                       <label for="website">Website:</label>
-                      <input type="text" name="website" id="website" class="form-control" placeholder="Full Name">
+                      <input type="text" value="<?php if(isset($cs_website)){echo $cs_website;}?>" name="website" id="website" class="form-control" placeholder="Full Name">
                     </div>
 
                     <div class="form-group">
                       <label for="comment">Comment:*</label>
-                      <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Enter your comment here..." class="form-control"></textarea> 
+                      <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Enter your comment here..." class="form-control"><?php if(isset($cs_comment)){echo $cs_comment;}?></textarea> 
                     </div>
 
                      <a href="#"><input type="submit" name="submit" class="btn btn-primary" value="Submit Comment"></a>
