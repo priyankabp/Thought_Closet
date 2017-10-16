@@ -6,6 +6,8 @@
     <?php
       if (isset($_GET['post_id'])) {
         $post_id = $_GET['post_id'];
+        $views_query = "UPDATE `cms`.`posts` SET `views` = views + 1 WHERE `posts`.`id` = $post_id";
+        mysqli_query($connection,$views_query);
         $query = "SELECT * FROM posts WHERE status = 'publish' and id = $post_id";
         $run = mysqli_query($connection,$query);
         if(mysqli_num_rows($run) > 0){
