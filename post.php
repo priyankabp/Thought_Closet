@@ -109,29 +109,40 @@
               </div>
             </div>
 
-            <!-- Comments on the Post on Single post page-->
-            <div class="comments">
-              <h3>Comments</h3><hr>
-              <div class="row single-comment">
-                <div class="col-sm-2">
-                  <img src="images/unknown-profile" alt="Profile Picture" class="img-circle">
-                </div>
-                <div class="col-sm-10">
-                  <h4>Priyanka</h4>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                </div>
-              </div>
+            <!-- Query to fetch comments from DB -->
+            <?php
+              $c_query="SELECT * FROM comments WHERE status ='approve' and post_id = $post_id ORDER BY id DESC";
+              $c_run = mysqli_query($connection,$c_query);
+              if (mysqli_num_rows($c_run) > 0) {
+              ?>
 
-              <div class="row single-comment">
-                <div class="col-sm-2">
-                  <img src="images/unknown-profile" alt="Profile Picture" class="img-circle">
+              <!-- Comments on the Post on Single post page-->
+              <div class="comments">
+                <h3>Comments</h3>
+                <!--Loop to read all comments for this post -->
+                <?php
+                  while ($c_row = mysqli_fetch_array($c_run)) {
+                    $c_id = $c_row['id'];
+                    $c_image = $c_row['image'];
+                    $c_username = $c_row['username'];
+                    $c_name = $c_row['name'];
+                    $c_comment = $c_row['comment'];
+
+                  }
+                ?>
+                <hr>
+                <div class="row single-comment">
+                  <div class="col-sm-2">
+                    <img src="images/<?php echo $c_image; ?>" alt="Profile Picture" class="img-circle">
+                  </div>
+                  <div class="col-sm-10">
+                    <h4><?php echo ucfirst($c_username); ?></h4>
+                    <p><?php echo $c_comment; ?></p>
+                  </div>
                 </div>
-                <div class="col-sm-10">
-                  <h4>Priyanka</h4>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                </div>
+                <?php } ?>
               </div>
-            </div>
+            <?php } ?>
 
             <!-- Add new comments on the Post on Single post page-->
             <div class="comment-box">
