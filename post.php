@@ -134,7 +134,7 @@
                     <img src="images/<?php echo $c_image; ?>" alt="Profile Picture" class="img-circle">
                   </div>
                   <div class="col-sm-10">
-                    <h4><?php echo ucfirst($c_username); ?></h4>
+                    <h4><?php echo ucfirst($c_name); ?></h4>
                     <p><?php echo $c_comment; ?></p>
                   </div>
                 </div>
@@ -143,31 +143,61 @@
             <?php } ?>
 
             <!-- Add new comments on the Post on Single post page-->
+            <?php
+              if (isset($_POST['submit'])) {
+                $cs_name = $_POST['name'];
+                $cs_email = $_POST['email'];
+                $cs_website = $_POST['website'];
+                $cs_comment = $_POST['comment'];
+                $cs_date = time();
+                if (empty($cs_name) or empty($cs_email) or empty($cs_comment)) {
+                  $error_msg = "All (*) fields are required";
+                }
+                else{
+                  $cs_query = "INSERT INTO `cms`.`comments` (`date`, `name`, `username`, `post_id`, `email`, `website`, `image`, `comment`, `status`) VALUES ('$cs_date', '$cs_name', 'user', '$post_id', '$cs_email', '$cs_website', 'unknown-profile.png', '$cs_comment','pending')";
+                  if(mysqli_query($connection,$cs_query)){
+                    $msg = "Comment submitted and waiting for approval";
+                  }
+                  else{
+                    $error_msg = "Comment has not been submitted";
+                  }
+                }
+              }
+            ?>
             <div class="comment-box">
               <div class="row">
                 <div class="col-xs-12">
-                  <form action="">
+                  <form action="" method="post">
                     <div class="form-group">
                       <label for="fullname">Full Name:*</label>
-                      <input type="text" name="" id="fullname" class="form-control" placeholder="Full Name">
+                      <input type="text" name="name" id="fullname" class="form-control" placeholder="Full Name">
                     </div>
 
                     <div class="form-group">
                       <label for="email">Email Address:*</label>
-                      <input type="text" name="" id="email" class="form-control" placeholder="Email">
+                      <input type="text" name="email" id="email" class="form-control" placeholder="Email">
                     </div>
 
                     <div class="form-group">
                       <label for="website">Website:</label>
-                      <input type="text" name="" id="website" class="form-control" placeholder="Full Name">
+                      <input type="text" name="website" id="website" class="form-control" placeholder="Full Name">
                     </div>
 
                     <div class="form-group">
                       <label for="comment">Comment:*</label>
-                      <textarea id="comment" cols="30" rows="10" placeholder="Enter your comment here..." class="form-control"></textarea> 
+                      <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Enter your comment here..." class="form-control"></textarea> 
                     </div>
 
                      <a href="#"><input type="submit" name="submit" class="btn btn-primary" value="Submit Comment"></a>
+
+                     <?php
+                      if (isset($error_msg)) {
+                        echo "<span style = 'color:red;' class='pull-right'>$error_msg</span>";
+                      }
+                      elseif (isset($msg)) {
+                        echo "<span style = 'color:green;' class='pull-right'>$msg</span>";
+                      }
+                     ?>
                   </form>
                 </div>
               </div>
