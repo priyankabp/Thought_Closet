@@ -127,8 +127,6 @@
                     $c_username = $c_row['username'];
                     $c_name = $c_row['name'];
                     $c_comment = $c_row['comment'];
-
-                  }
                 ?>
                 <hr>
                 <div class="row single-comment">
