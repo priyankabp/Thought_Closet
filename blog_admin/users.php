@@ -16,6 +16,13 @@
               <li class="active"><i class="fa fa-users"></i> Users</li>
             </ol>
 
+
+            <?php
+              $query = "SELECT * FROM users ORDER BY id DESC";
+              $run = mysqli_query($connection,$query);
+              if (mysqli_num_rows($run) > 0) {
+              
+            ?>
             <div class="row">
               <div class="col-sm-8">
                 <form action="">
@@ -50,84 +57,51 @@
                   <th>Image</th>
                   <th>Password</th>
                   <th>Role</th>
-                  <th>Posts</th>
                   <th>Edit</th>
                   <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
+
+                <?php
+                  while ($row = mysqli_fetch_array($run)) {
+                    $id = $row['id'];
+                    $first_name = ucfirst($row['first_name']);
+                    $last_name = ucfirst($row['last_name']);
+                    $email = $row['email'];
+                    $username = $row['username'];
+                    $role = ucfirst($row['role']);
+                    $image = $row['image'];
+                    $date = getdate($row['date']);
+                    $day = $date['mday'];
+                    $month = substr($date['month'], 0,3);
+                    $year = $date['year'];
+
+                ?>
                 <tr>
                   <td><input type="checkbox"></td>
-                  <td>1</td>
-                  <td>13 Oct 2017</td>
-                  <td>Priyanka</td>
-                  <td>priyanka</td>
-                  <td>priya@gmail.com</td>
-                  <td><img src="images/unknown-profile.png" width="30px"></td>
-                  <td>abc</td>
-                  <td>Admin</td>
-                  <td>11</td>
-                  <td><a href="#"><i class="fa fa-pencil"></i></a></td>
-                  <td><a href="#"><i class="fa fa-times"></i></a></td>
+                  <td><?php echo $id;?></td>
+                  <td><?php echo "$day $month $year";?></td>
+                  <td><?php echo "$first_name $last_name";?></td>
+                  <td><?php echo $username;?></td>
+                  <td><?php echo $email;?></td>
+                  <td><img src="images/<?php echo $image;?>" width="30px"></td>
+                  <td>********</td>
+                  <td><?php echo $role;?></td>
+                  <td><a href="add-user.php?edit=<?php echo $id;?>"><i class="fa fa-pencil"></i></a></td>
+                  <td><a href="users.php?delete=<?php echo $id;?>"><i class="fa fa-times"></i></a></td>
                 </tr>
-                <tr>
-                  <td><input type="checkbox"></td>
-                  <td>1</td>
-                  <td>13 Oct 2017</td>
-                  <td>Priyanka</td>
-                  <td>priyanka</td>
-                  <td>priya@gmail.com</td>
-                  <td><img src="images/unknown-profile.png" width="30px"></td>
-                  <td>abc</td>
-                  <td>Admin</td>
-                  <td>11</td>
-                  <td><a href="#"><i class="fa fa-pencil"></i></a></td>
-                  <td><a href="#"><i class="fa fa-times"></i></a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox"></td>
-                  <td>1</td>
-                  <td>13 Oct 2017</td>
-                  <td>Priyanka</td>
-                  <td>priyanka</td>
-                  <td>priya@gmail.com</td>
-                  <td><img src="images/unknown-profile.png" width="30px"></td>
-                  <td>abc</td>
-                  <td>Admin</td>
-                  <td>11</td>
-                  <td><a href="#"><i class="fa fa-pencil"></i></a></td>
-                  <td><a href="#"><i class="fa fa-times"></i></a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox"></td>
-                  <td>1</td>
-                  <td>13 Oct 2017</td>
-                  <td>Priyanka</td>
-                  <td>priyanka</td>
-                  <td>priya@gmail.com</td>
-                  <td><img src="images/unknown-profile.png" width="30px"></td>
-                  <td>abc</td>
-                  <td>Admin</td>
-                  <td>11</td>
-                  <td><a href="#"><i class="fa fa-pencil"></i></a></td>
-                  <td><a href="#"><i class="fa fa-times"></i></a></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox"></td>
-                  <td>1</td>
-                  <td>13 Oct 2017</td>
-                  <td>Priyanka</td>
-                  <td>priyanka</td>
-                  <td>priya@gmail.com</td>
-                  <td><img src="images/unknown-profile.png" width="30px"></td>
-                  <td>abc</td>
-                  <td>Admin</td>
-                  <td>11</td>
-                  <td><a href="#"><i class="fa fa-pencil"></i></a></td>
-                  <td><a href="#"><i class="fa fa-times"></i></a></td>
-                </tr>
+                <?php } ?>
               </tbody>
             </table>
+
+            <?php
+              }
+              else{
+                echo "<center><h2>No Users Avaliable </h2></center>";
+              }
+            ?>
+
           </div>
         </div>
       </div>
