@@ -16,11 +16,49 @@
               <li class="active"><i class="fa fa-user-plus"></i> Add New User</li>
             </ol>
 
+
+            <?php
+              if (isset($_POST['submit'])) {
+                $first_name = mysqli_real_escape_string($connection,$_POST['first-name']);
+                $last_name = mysqli_real_escape_string($connection,$_POST['last-name']);
+                $username = mysqli_real_escape_string($connection,$_POST['username']);
+                $username_trim = preg_replace("/\s+/",'', $username);
+                $email = mysqli_real_escape_string($connection,$_POST['email']);
+                $password = mysqli_real_escape_string($connection,$_POST['password']);
+                $role = $_POST['role'];
+                $profile_image = $_FILES['profile-image']['name'];
+                $profile_image_tmp = $_FILES['profile-image']['tmp_name'];
+
+                $check_query = "SELECT * FROM users WHERE username = '$username' or email = '$email'";
+                $check_run = mysqli_query($connection,$check_query);
+
+                if (empty($first_name) or empty($last_name) or empty($username) or empty($email) or empty($password) or empty($profile_image)) {
+                  $error = "All (*) fields are Required";
+                }
+                else if($username != $username_trim){
+                  $error = "Don't Use spaces in Username";
+                }
+                else if (mysqli_num_rows($check_run) > 0) {
+                  $error = "Username or Email already exits";
+                }
+                else{
+                  $msg = "All Fine";
+                }
+              }
+            ?>
             <div class="row">
               <div class="col-md-8">
-                <form action="" method="post">
+                <form action="" method="post" enctype="multipart/form-data">
                   <div class="form-group">
                     <label for="first-name">First Name:*</label>
+                    <?php 
+                      if (isset($error)) {
+                        echo "<span class='pull-right' style='color:red;'>$error</span>";
+                      }
+                      elseif (isset($msg)) {
+                        echo "<span class='pull-right' style='color:green;'>$msg</span>";
+                      }
+                    ?>
                     <input type="text" id="first-name" name="first-name" class="form-control" placeholder="First Name">
                   </div>
 
