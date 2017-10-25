@@ -16,7 +16,6 @@
               <li class="active"><i class="fa fa-user-plus"></i> Add New User</li>
             </ol>
 
-
             <?php
               if (isset($_POST['submit'])) {
                 $date = time();
@@ -52,10 +51,10 @@
                 else{
                   #Insert user into database
 
-                  $insert_user_query = "INSERT INTO `cms`.`users` (`date`, `first_name`, `last_name`, `username`, `email`, `image`, `passowrd`, `role`) VALUES ('$date', '$first_name', '$last_name', '$usernme', '$email', '$profile_image', '$password', '$role')";
+                  $insert_user_query = "INSERT INTO `cms`.`users` (`date`, `first_name`, `last_name`, `username`, `email`, `image`, `passowrd`, `role`) VALUES ('$date', '$first_name', '$last_name', '$username', '$email', '$profile_image', '$password', '$role')";
                   if (mysqli_query($connection,$insert_user_query)) {
                     $msg = "New User Added";
-                    move_uploaded_file($image_tmp,"img/$image");
+                    move_uploaded_file($profile_image_tmp,"images/$image");
                     $image_check = "SELECT * FROM users ORDER BY id DESC LIMIT 1";
                     $image_run = mysqli_query($connection,$image_check);
                     $image_row = mysqli_fetch_array($image_run);
@@ -67,6 +66,7 @@
                     $username="";
                     $email="";
                   }else{
+                    echo "Error: " . $insert_user_query . "<br>" . $connection->error;
                     $error = "New User Not Added";
                   }
                 }
@@ -127,7 +127,7 @@
               <div class="col-md-4">
                 <?php
                   if (isset($check_image)) {
-                    echo "<img src='img/$check_image width='100%'>";
+                    echo "<img src='images/$check_image' width='100%'>";
                   }
                 ?>
               </div>

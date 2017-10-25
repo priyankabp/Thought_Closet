@@ -1,4 +1,20 @@
 <?php require_once('include/top.php'); ?>
+<?php
+  # Delete User functionality
+  if (isset($_GET['delete'])) {
+    # Get the id of the user to be deleted
+    $delete_id = $_GET['delete'];
+    # Delete query to delete the user
+    $delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $delete_id;";
+    if (mysqli_query($connection,$delete_query)) {
+      $msg = "User has been deleted";
+    }
+    else{
+      $error = "User has not been deleted";
+    }
+  }
+
+?>
   </head>
   <body>
     <div id="wrapper">
@@ -38,13 +54,25 @@
                     </div>
                     <div class="col-xs-8">
                       <input type="submit" name="" class="btn btn-success" value="Apply">
-                      <a href="#" class="btn btn-primary">Add New</a>
+                      <a href="add-user.php" class="btn btn-primary">Add New</a>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
 
+
+            <!-- Displaying message for the admin if the user is deleted or not-->
+            <?php
+              if (isset($error)) {
+                echo "<span style='color:red;' class='pull-right'>$error</span>";
+              }
+              elseif (isset($msg)) {
+                echo "<span style='color:green;' class='pull-right'>$msg</span>";
+              }
+            ?>
+
+            <!-- Displaying the rigistered user in tabular format -->
             <table class="table table-bordered table-striped table-hover">
               <thead>
                 <tr>
@@ -64,6 +92,8 @@
               <tbody>
 
                 <?php
+
+                  # Reading all the users data from the database and storing each parameter in a variable
                   while ($row = mysqli_fetch_array($run)) {
                     $id = $row['id'];
                     $first_name = ucfirst($row['first_name']);
@@ -79,6 +109,7 @@
 
                 ?>
                 <tr>
+                  <!-- Displaying users dynamically from database -->
                   <td><input type="checkbox"></td>
                   <td><?php echo $id;?></td>
                   <td><?php echo "$day $month $year";?></td>
@@ -96,6 +127,9 @@
             </table>
 
             <?php
+              
+              # Message to be displayed when no users are available in the database
+
               }
               else{
                 echo "<center><h2>No Users Avaliable </h2></center>";
