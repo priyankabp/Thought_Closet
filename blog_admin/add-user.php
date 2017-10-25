@@ -19,11 +19,12 @@
 
             <?php
               if (isset($_POST['submit'])) {
+                $date = time();
                 $first_name = mysqli_real_escape_string($connection,$_POST['first-name']);
                 $last_name = mysqli_real_escape_string($connection,$_POST['last-name']);
-                $username = mysqli_real_escape_string($connection,$_POST['username']);
+                $username = mysqli_real_escape_string($connection,strtolower($_POST['username']));
                 $username_trim = preg_replace("/\s+/",'', $username);
-                $email = mysqli_real_escape_string($connection,$_POST['email']);
+                $email = mysqli_real_escape_string($connection,strtolower($_POST['email']));
                 $password = mysqli_real_escape_string($connection,$_POST['password']);
                 $role = $_POST['role'];
                 $profile_image = $_FILES['profile-image']['name'];
@@ -31,6 +32,13 @@
 
                 $check_query = "SELECT * FROM users WHERE username = '$username' or email = '$email'";
                 $check_run = mysqli_query($connection,$check_query);
+
+                # Encrypting password
+                $salt_query = "SELECT * from users ORDER BY id DESC LIMIT 1";
+                $salt_run = mysqli_query($connection,$salt_query);
+                $salt_row = mysqli_fetch_array($salt_run);
+                $salt = $salt_row['salt'];
+                $password = crypt($password,$salt);
 
                 if (empty($first_name) or empty($last_name) or empty($username) or empty($email) or empty($password) or empty($profile_image)) {
                   $error = "All (*) fields are Required";
@@ -42,7 +50,25 @@
                   $error = "Username or Email already exits";
                 }
                 else{
-                  $msg = "All Fine";
+                  #Insert user into database
+
+                  $insert_user_query = "INSERT INTO `cms`.`users` (`date`, `first_name`, `last_name`, `username`, `email`, `image`, `passowrd`, `role`) VALUES ('$date', '$first_name', '$last_name', '$usernme', '$email', '$profile_image', '$password', '$role')";
+                  if (mysqli_query($connection,$insert_user_query)) {
+                    $msg = "New User Added";
+                    move_uploaded_file($image_tmp,"img/$image");
+                    $image_check = "SELECT * FROM users ORDER BY id DESC LIMIT 1";
+                    $image_run = mysqli_query($connection,$image_check);
+                    $image_row = mysqli_fetch_array($image_run);
+                    $check_image = $image_row['image'];
+
+                    # Clearing all the fields of add-user after submit
+                    $first_name="";
+                    $last_name="";
+                    $username="";
+                    $email="";
+                  }else{
+                    $error = "New User Not Added";
+                  }
                 }
               }
             ?>
@@ -59,22 +85,22 @@
                         echo "<span class='pull-right' style='color:green;'>$msg</span>";
                       }
                     ?>
-                    <input type="text" id="first-name" name="first-name" class="form-control" placeholder="First Name">
+                    <input type="text" id="first-name" name="first-name" class="form-control" value="<?php if(isset($first_name)){echo $first_name;}?>" placeholder="First Name">
                   </div>
 
                   <div class="form-group">
                     <label for="last-name">Last Name:*</label>
-                    <input type="text" id="last-name" name="last-name" class="form-control" placeholder="Last Name">
+                    <input type="text" id="last-name" name="last-name" class="form-control" value="<?php if(isset($last_name)){echo $last_name;}?>" placeholder="Last Name">
                   </div>
 
                   <div class="form-group">
                     <label for="usernme">Username:*</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="Username">
+                    <input type="text" id="username" name="username" class="form-control" value="<?php if(isset($username)){echo $username;}?>" placeholder="Username">
                   </div>
 
                   <div class="form-group">
                     <label for="email">Email:*</label>
-                    <input type="text" id="email" name="email" class="form-control" placeholder="Email Address">
+                    <input type="text" id="email" name="email" class="form-control" value="<?php if(isset($email)){echo $email;}?>" placeholder="Email Address">
                   </div>
 
                   <div class="form-group">
@@ -92,13 +118,19 @@
 
                   <div class="form-group">
                     <label for="profile-image">Profile Picture:*</label>
-                    <input type="file" id="profile-image" name="profile-image">
+                    <input type="file" id="profile-image" name="profile-image" >
                   </div>
 
                   <input type="submit" name="submit" value="Add User" class="btn btn-primary">
                 </form>
               </div>
-              <div class="col-md-4"></div>
+              <div class="col-md-4">
+                <?php
+                  if (isset($check_image)) {
+                    echo "<img src='img/$check_image width='100%'>";
+                  }
+                ?>
+              </div>
             </div>
           </div>
         </div>
