@@ -13,7 +13,23 @@
       $error = "User has not been deleted";
     }
   }
-
+  if (isset($_POST['checkboxes'])) {
+    foreach ($_POST['checkboxes'] as $user_id) {
+      $bulk_option = $_POST['bulk-options'];
+      if ($bulk_option == 'delete') {
+        $bulk_delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $user_id;";
+        mysqli_query($connection,$bulk_delete_query);
+      }
+      elseif ($bulk_option == 'author') {
+        $bulk_author_query = "UPDATE `cms`.`users` SET `role`='author' WHERE `id`= $user_id";
+        mysqli_query($connection,$bulk_author_query);
+      }
+      elseif ($bulk_option == 'admin') {
+        $bulk_admin_query = "UPDATE `cms`.`users` SET `role`='admin' WHERE `id`= $user_id";
+        mysqli_query($connection,$bulk_admin_query);
+      }
+    }
+  }
 ?>
   </head>
   <body>
@@ -39,16 +55,16 @@
               if (mysqli_num_rows($run) > 0) {
               
             ?>
+            <form action="" method="post">
             <div class="row">
               <div class="col-sm-8">
-                <form action="">
                   <div class="row">
                     <div class="col-xs-4">
                       <div class="form-group">
-                        <select name="" id="" class="form-control">
+                        <select name="bulk-options" id="" class="form-control">
                           <option value="delete">Delete</option>
                           <option value="author">Change to author</option>
-                          <option value="author">Change to admin</option>
+                          <option value="admin">Change to admin</option>
                         </select>
                       </div>
                     </div>
@@ -57,7 +73,6 @@
                       <a href="add-user.php" class="btn btn-primary">Add New</a>
                     </div>
                   </div>
-                </form>
               </div>
             </div>
 
@@ -76,7 +91,7 @@
             <table class="table table-bordered table-striped table-hover">
               <thead>
                 <tr>
-                  <th><input type="checkbox"></th>
+                  <th><input type="checkbox" id="selectallcheckboxes"></th>
                   <th>Sr #</th>
                   <th>Date</th>
                   <th>Name</th>
@@ -110,7 +125,7 @@
                 ?>
                 <tr>
                   <!-- Displaying users dynamically from database -->
-                  <td><input type="checkbox"></td>
+                  <td><input type="checkbox" class="checkboxes" name="checkboxes[]" value="<?php echo $id;?>"></td>
                   <td><?php echo $id;?></td>
                   <td><?php echo "$day $month $year";?></td>
                   <td><?php echo "$first_name $last_name";?></td>
@@ -135,7 +150,7 @@
                 echo "<center><h2>No Users Avaliable </h2></center>";
               }
             ?>
-
+            </form>
           </div>
         </div>
       </div>
