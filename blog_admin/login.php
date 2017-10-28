@@ -22,6 +22,8 @@ session_start();
 
       if ($username == $db_username) {
         header('Location: index.php');
+        $_SESSION['username'] = $db_username;
+        $_SESSION['role'] = $db_role;
       }
       else{
         $error = "redirect else";

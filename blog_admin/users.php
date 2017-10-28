@@ -1,16 +1,24 @@
 <?php require_once('include/top.php'); ?>
 <?php
+if (!isset($_SESSION['username'])) {
+  header('Location: login.php');
+}
+elseif (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
+  header('Location: index.php');
+}
   # Delete User functionality
   if (isset($_GET['delete'])) {
     # Get the id of the user to be deleted
     $delete_id = $_GET['delete'];
     # Delete query to delete the user
     $delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $delete_id;";
-    if (mysqli_query($connection,$delete_query)) {
-      $msg = "User has been deleted";
-    }
-    else{
-      $error = "User has not been deleted";
+    if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
+      if (mysqli_query($connection,$delete_query)) {
+        $msg = "User has been deleted";
+      }
+      else{
+        $error = "User has not been deleted";
+      }
     }
   }
   if (isset($_POST['checkboxes'])) {
@@ -134,7 +142,7 @@
                   <td><img src="images/<?php echo $image;?>" width="30px"></td>
                   <td>********</td>
                   <td><?php echo $role;?></td>
-                  <td><a href="add-user.php?edit=<?php echo $id;?>"><i class="fa fa-pencil"></i></a></td>
+                  <td><a href="edit-user.php?edit=<?php echo $id;?>"><i class="fa fa-pencil"></i></a></td>
                   <td><a href="users.php?delete=<?php echo $id;?>"><i class="fa fa-times"></i></a></td>
                 </tr>
                 <?php } ?>

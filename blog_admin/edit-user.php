@@ -17,10 +17,10 @@ elseif (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
             <?php require_once('include/left_sidebar.php'); ?>
           </div>
           <div class="col-md-9">
-            <h1><i class="fa fa-user-plus" aria-hidden="true"></i> Add Users <small>Add New User</small></h1><hr>
+            <h1><i class="fa fa-user" aria-hidden="true"></i> Edit User <small>Edit User Details</small></h1><hr>
             <ol class="breadcrumb">
               <li><a href="index.html"><i class="fa fa-tachometer"></i> Dashboard</a></li>
-              <li class="active"><i class="fa fa-user-plus"></i> Add New User</li>
+              <li class="active"><i class="fa fa-user"></i> Edit User</li>
             </ol>
 
             <?php
