@@ -1,4 +1,8 @@
-<?php require_once('../include/db.php');?>
+<?php 
+    ob_start();
+    session_start();
+    require_once('../include/db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
