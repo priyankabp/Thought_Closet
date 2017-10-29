@@ -26,11 +26,11 @@ session_start();
         $_SESSION['role'] = $db_role;
       }
       else{
-        $error = "redirect else";
+        $error = "You dont have access to this page";
       }
     }
     else{
-      $error = "Last else";
+      $error = "Username and password combination does not exit";
     }
   }
 ?>

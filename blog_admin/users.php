@@ -52,7 +52,7 @@ elseif (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
           <div class="col-md-9">
             <h1><i class="fa fa-users" aria-hidden="true"></i> Users <small>View All Users</small></h1><hr>
             <ol class="breadcrumb">
-              <li><a href="index.html"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+              <li><a href="index.php"><i class="fa fa-tachometer"></i> Dashboard</a></li>
               <li class="active"><i class="fa fa-users"></i> Users</li>
             </ol>
 
