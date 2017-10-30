@@ -5,6 +5,12 @@ body{
 	padding-top: 60px;
 }
 
+body#profile img#profile-image{
+	-webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
+}
+
 .huge{
 	font-size: 40px;
 }
