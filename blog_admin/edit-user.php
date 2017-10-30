@@ -5,8 +5,9 @@ if (!isset($_SESSION['username'])) {
 else if (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
   header('Location: index.php');
 }
-
 if (isset($_GET['edit'])) {
+    error_reporting(E_ALL);
+    ini_set('display_errors','On');
     $edit_id = $_GET['edit'];
     $edit_query = "SELECT * FROM users WHERE id = $edit_id";
     $edit_query_run = mysqli_query($connection,$edit_query);
@@ -62,13 +63,28 @@ else{
                 $salt_run = mysqli_query($connection,$salt_query);
                 $salt_row = mysqli_fetch_array($salt_run);
                 $salt = $salt_row['salt'];
-                $password = crypt($password,$salt);
+                $insert_password = crypt($password,$salt);
 
                 if (empty($first_name) or empty($last_name) or empty($profile_image)) {
                   $error = "All (*) fields are Required";
                 }
                 else{
-                  $update_query = "UPDATE `cms`.`users` SET `first_name`='Payal', `last_name`='Navale', `image`='profile-picture.jpg', `passowrd`='4', `role`='author', `details`='Lets start with my first post' WHERE `id`='20';"
+                  $update_query = "UPDATE `cms`.`users` SET `first_name`='$first_name', `last_name`='$last_name', `image`='$profile_image', `role`='$role', `details`='$details'";
+                  if (isset($passowrd)) {
+                    $update_query .= ",`passowrd` = $insert_password";
+                  }
+                  $update_query .= " WHERE `users`.`id` = $edit_id";
+                  if (mysqli_query($connection,$update_query)) {
+                    $msg = "User has been updated";
+                    header("refresh:0; url=edit-user.php?edit=$edit_id");
+
+                    if (!empty($profile_image)) {
+                      move_uploaded_file($profile_image_tmp, "images/$profile_image");
+                    }
+                  }
+                  else{
+                    $error = "User has not been updated";
+                  }
                 }
               }
             ?>
@@ -121,6 +137,7 @@ else{
               </div>
               <div class="col-md-4">
                 <?php
+                #TODO: image not displayed - Bug fixing
                     echo "<img src='images/$e_image' width='100%'>";
                 ?>
               </div>
