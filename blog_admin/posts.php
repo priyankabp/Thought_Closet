@@ -28,21 +28,26 @@ $session_username = $_SESSION['username'];
         $error = "Post has not been deleted";
       }
     }
+    else{
+      header('Location: index.php');
+    }
       
   }
+
+
   if (isset($_POST['checkboxes'])) {
     foreach ($_POST['checkboxes'] as $user_id) {
       $bulk_option = $_POST['bulk-options'];
       if ($bulk_option == 'delete') {
-        $bulk_delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $user_id;";
+        $bulk_delete_query = "DELETE FROM `cms`.`posts` WHERE `id`= $user_id;";
         mysqli_query($connection,$bulk_delete_query);
       }
-      elseif ($bulk_option == 'author') {
-        $bulk_author_query = "UPDATE `cms`.`users` SET `role`='author' WHERE `id`= $user_id";
+      elseif ($bulk_option == 'publish') {
+        $bulk_author_query = "UPDATE `cms`.`posts` SET `status`='publish' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_author_query);
       }
-      elseif ($bulk_option == 'admin') {
-        $bulk_admin_query = "UPDATE `cms`.`users` SET `role`='admin' WHERE `id`= $user_id";
+      elseif ($bulk_option == 'draft') {
+        $bulk_admin_query = "UPDATE `cms`.`posts` SET `status`='draft' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_admin_query);
       }
     }
@@ -156,7 +161,8 @@ $session_username = $_SESSION['username'];
                   <td><img src="images/<?php echo $image;?>" width="30px"></td>
                   <td><?php echo $categories;?></td>
                   <td><?php echo $views;?></td>
-                  <td><?php echo ucfirst($status);?></td>
+                  <td><span style="color:<?php if ($status == 'publish') {echo 'green';}else if($status == 'draft'){echo "red";}?>;"><?php echo ucfirst($status);?></span>
+                  </td>
                   <td><a href="edit-post.php?edit=<?php echo $id;?>"><i class="fa fa-pencil"></i></a></td>
                   <td><a href="posts.php?delete=<?php echo $id;?>"><i class="fa fa-times"></i></a></td>
                 </tr>
