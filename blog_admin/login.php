@@ -16,6 +16,7 @@ session_start();
       $db_username = $row['username'];
       $db_password = $row['password'];
       $db_role = $row['role'];
+      $db_author_image = $row['image'];
 
       $password = crypt($password, $db_password);
       echo "$password";
@@ -24,6 +25,7 @@ session_start();
         header('Location: index.php');
         $_SESSION['username'] = $db_username;
         $_SESSION['role'] = $db_role;
+        $_SESSION['author_image'] = $db_author_image;
       }
       else{
         $error = "You dont have access to this page";

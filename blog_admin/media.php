@@ -29,7 +29,10 @@ if (!isset($_SESSION['username'])) {
                     $tmp_name = $_FILES['media']['tmp_name'][$i];
                     $query = "INSERT INTO `cms`.`media` (`image`) VALUES ('$image')";
                     if(mysqli_query($connection,$query)){
-                      move_uploaded_file($tmp_name, "media/$image");
+                      $path = "media/$image";
+                      if(move_uploaded_file($tmp_name,$path)){
+                        copy($path, "../$path");
+                      }
                     }
                   }
                 }

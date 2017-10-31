@@ -98,7 +98,7 @@ $session_username = $_SESSION['username'];
                     </div>
                     <div class="col-xs-8">
                       <input type="submit" name="" class="btn btn-success" value="Apply">
-                      <a href="" class="btn btn-primary">Add New</a>
+                      <a href="add-post.php" class="btn btn-primary">Add New</a>
                     </div>
                   </div>
               </div>

@@ -62,9 +62,9 @@
                 </div>
               </div>
               <a href="images/<?php echo $image;?>"><img src="images/<?php echo $image;?>" alt="Post Image"></a>
-              <p class="description">
+              <div class="description">
                  <?php echo $post_data;?>
-              </p>
+              </div>
               <div class="bottom">
                 <span class="category">
                   <i class="fa fa-folder-open" aria-hidden="true"></i><a href="#"> <?php echo ucfirst($categories);?></a>
