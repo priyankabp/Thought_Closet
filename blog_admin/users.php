@@ -10,17 +10,26 @@ elseif (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
   if (isset($_GET['delete'])) {
     # Get the id of the user to be deleted
     $delete_id = $_GET['delete'];
-    # Delete query to delete the user
-    $delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $delete_id;";
-    if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
-      if (mysqli_query($connection,$delete_query)) {
-        $msg = "User has been deleted";
-      }
-      else{
-        $error = "User has not been deleted";
+    $delete_check_query = "SELECT * FROM users WHERE id = $delete_id";
+    $delete_check_run = mysqli_query($connection,$delete_check_query);
+    if (mysqli_num_rows($delete_check_run) > 0) {
+      # Delete query to delete the user
+      $delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $delete_id;";
+      if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
+        if (mysqli_query($connection,$delete_query)) {
+          $msg = "User has been deleted";
+        }
+        else{
+          $error = "User has not been deleted";
+        }
       }
     }
+    else{
+      header('Location: index.php');
+    }
   }
+
+  #Bulk options functionality
   if (isset($_POST['checkboxes'])) {
     foreach ($_POST['checkboxes'] as $user_id) {
       $bulk_option = $_POST['bulk-options'];
