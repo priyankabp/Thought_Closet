@@ -67,7 +67,7 @@ if (isset($_GET['edit'])) {
                   $error = "All * fields are required";
                 }
                 else{
-                  $update_query = "UPDATE `cms`.`posts` SET `title` = '$up_title',`image` = '$up_image',`categories` = '$up_categories',`tags` = '$up_tags',`post_data` = '$up_post_data',`status` = '$up_status' WHERE id = $edit_id";
+                  $update_query = "UPDATE `posts` SET `title` = '$up_title',`image` = '$up_image',`categories` = '$up_categories',`tags` = '$up_tags',`post_data` = '$up_post_data',`status` = '$up_status' WHERE id = $edit_id";
 
                   if (mysqli_query($connection,$update_query)) {
                     $msg = "Post Updated";

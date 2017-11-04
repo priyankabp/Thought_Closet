@@ -20,7 +20,7 @@ $session_username = $_SESSION['username'];
       $delete_check_run = mysqli_query($connection, $delete_check_query);
     }
     if (mysqli_num_rows($delete_check_run) > 0) {
-      $delete_query = "DELETE FROM `cms`.`posts` WHERE `id`= $delete_id";
+      $delete_query = "DELETE FROM `posts` WHERE `id`= $delete_id";
       if (mysqli_query($connection,$delete_query)) {
         $msg = "Post has been deleted";
       }
@@ -39,15 +39,15 @@ $session_username = $_SESSION['username'];
     foreach ($_POST['checkboxes'] as $user_id) {
       $bulk_option = $_POST['bulk-options'];
       if ($bulk_option == 'delete') {
-        $bulk_delete_query = "DELETE FROM `cms`.`posts` WHERE `id`= $user_id;";
+        $bulk_delete_query = "DELETE FROM `posts` WHERE `id`= $user_id;";
         mysqli_query($connection,$bulk_delete_query);
       }
       elseif ($bulk_option == 'publish') {
-        $bulk_author_query = "UPDATE `cms`.`posts` SET `status`='publish' WHERE `id`= $user_id";
+        $bulk_author_query = "UPDATE `posts` SET `status`='publish' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_author_query);
       }
       elseif ($bulk_option == 'draft') {
-        $bulk_admin_query = "UPDATE `cms`.`posts` SET `status`='draft' WHERE `id`= $user_id";
+        $bulk_admin_query = "UPDATE `posts` SET `status`='draft' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_admin_query);
       }
     }

@@ -69,7 +69,7 @@ else{
                   $error = "All (*) fields are Required";
                 }
                 else{
-                  $update_query = "UPDATE `cms`.`users` SET `first_name`='$first_name', `last_name`='$last_name', `image`='$profile_image', `role`='$role', `details`='$details'";
+                  $update_query = "UPDATE `users` SET `first_name`='$first_name', `last_name`='$last_name', `image`='$profile_image', `role`='$role', `details`='$details'";
                   if (isset($passowrd)) {
                     $update_query .= ",`passowrd` = $insert_password";
                   }

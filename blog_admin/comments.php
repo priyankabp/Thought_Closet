@@ -18,7 +18,7 @@ $session_username = $_SESSION['username'];
     $delete_check_run = mysqli_query($connection,$delete_check_query);
     if (mysqli_num_rows($delete_check_run) > 0) {
       # Delete query to delete the comment
-      $delete_query = "DELETE FROM `cms`.`comments` WHERE `id`= $delete_id;";
+      $delete_query = "DELETE FROM `comments` WHERE `id`= $delete_id;";
       if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
         if (mysqli_query($connection,$delete_query)) {
           $msg = "Comment has been deleted";
@@ -41,7 +41,7 @@ $session_username = $_SESSION['username'];
     $approve_check_run = mysqli_query($connection,$approve_check_query);
     if (mysqli_num_rows($approve_check_run) > 0) {
       # Update query to approve the comment
-      $approve_query = "UPDATE `cms`.`comments` SET `status`='approve' WHERE `id`= $approve_id";
+      $approve_query = "UPDATE `comments` SET `status`='approve' WHERE `id`= $approve_id";
       if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
         if (mysqli_query($connection,$approve_query)) {
           $msg = "Comment has been approved";
@@ -64,7 +64,7 @@ $session_username = $_SESSION['username'];
     $unapprove_check_run = mysqli_query($connection,$unapprove_check_query);
     if (mysqli_num_rows($unapprove_check_run) > 0) {
       # Update query to unapprove the comment
-      $unapprove_query = "UPDATE `cms`.`comments` SET `status`='pending' WHERE `id`= $unapprove_id";
+      $unapprove_query = "UPDATE `comments` SET `status`='pending' WHERE `id`= $unapprove_id";
       if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
         if (mysqli_query($connection,$unapprove_query)) {
           $msg = "Comment has been Unapproved";
@@ -84,15 +84,15 @@ $session_username = $_SESSION['username'];
     foreach ($_POST['checkboxes'] as $user_id) {
       $bulk_option = $_POST['bulk-options'];
       if ($bulk_option == 'delete') {
-        $bulk_delete_query = "DELETE FROM `cms`.`comments` WHERE `id`= $user_id;";
+        $bulk_delete_query = "DELETE FROM `comments` WHERE `id`= $user_id;";
         mysqli_query($connection,$bulk_delete_query);
       }
       elseif ($bulk_option == 'approve') {
-        $bulk_author_query = "UPDATE `cms`.`comments` SET `status`='approve' WHERE `id`= $user_id";
+        $bulk_author_query = "UPDATE `comments` SET `status`='approve' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_author_query);
       }
       elseif ($bulk_option == 'pending') {
-        $bulk_admin_query = "UPDATE `cms`.`comments` SET `status`='pending' WHERE `id`= $user_id";
+        $bulk_admin_query = "UPDATE `comments` SET `status`='pending' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_admin_query);
       }
     }
@@ -137,7 +137,7 @@ $session_username = $_SESSION['username'];
                     $email = $get_user_row['email'];
                     $image = $get_user_row['image'];
 
-                    $insert_comment_query = "INSERT INTO `cms`.`comments` (`date`,`name`,`username`,`post_id`,`email`,`image`,`comment`,`status`) VALUES ('$date','$full_name','$session_username','$reply_id','$email','$image','$comment_data','approve')";
+                    $insert_comment_query = "INSERT INTO `comments` (`date`,`name`,`username`,`post_id`,`email`,`image`,`comment`,`status`) VALUES ('$date','$full_name','$session_username','$reply_id','$email','$image','$comment_data','approve')";
 
                     if (mysqli_query($connection,$insert_comment_query)) {
                       $comment_msg = "Comment has been submitted";

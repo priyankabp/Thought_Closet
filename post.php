@@ -6,7 +6,7 @@
     <?php
       if (isset($_GET['post_id'])) {
         $post_id = $_GET['post_id'];
-        $views_query = "UPDATE `cms`.`posts` SET `views` = views + 1 WHERE `posts`.`id` = $post_id";
+        $views_query = "UPDATE `posts` SET `views` = views + 1 WHERE `posts`.`id` = $post_id";
         mysqli_query($connection,$views_query);
         $query = "SELECT * FROM posts WHERE status = 'publish' and id = $post_id";
         $run = mysqli_query($connection,$query);
@@ -163,7 +163,7 @@
                   $error_msg = "All (*) fields are required";
                 }
                 else{
-                  $cs_query = "INSERT INTO `cms`.`comments` (`date`, `name`, `username`, `post_id`, `email`, `website`, `image`, `comment`, `status`) VALUES ('$cs_date', '$cs_name', 'user', '$post_id', '$cs_email', '$cs_website', 'unknown-profile.png', '$cs_comment','pending')";
+                  $cs_query = "INSERT INTO `comments` (`date`, `name`, `username`, `post_id`, `email`, `website`, `image`, `comment`, `status`) VALUES ('$cs_date', '$cs_name', 'user', '$post_id', '$cs_email', '$cs_website', 'unknown-profile.png', '$cs_comment','pending')";
                   if(mysqli_query($connection,$cs_query)){
                     $msg = "Comment submitted and waiting for approval";
                     $cs_name = "";

@@ -27,7 +27,7 @@ if (!isset($_SESSION['username'])) {
                   for ($i=0; $i < count($_FILES['media']['name']); $i++) { 
                     $image = $_FILES['media']['name'][$i];
                     $tmp_name = $_FILES['media']['tmp_name'][$i];
-                    $query = "INSERT INTO `cms`.`media` (`image`) VALUES ('$image')";
+                    $query = "INSERT INTO `media` (`image`) VALUES ('$image')";
                     if(mysqli_query($connection,$query)){
                       $path = "media/$image";
                       if(move_uploaded_file($tmp_name,$path)){

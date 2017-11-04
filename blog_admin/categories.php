@@ -58,7 +58,7 @@ if (isset($_POST['update'])) {
       $update_error = "Category name already exits";
     }
     else{
-      $update_query = "UPDATE `cms`.`categories` SET `category`='$category_name' WHERE `id`='$edit_id'";
+      $update_query = "UPDATE `categories` SET `category`='$category_name' WHERE `id`='$edit_id'";
       if (mysqli_query($connection,$update_query)) {
         $update_msg = "Category name updated";
       }

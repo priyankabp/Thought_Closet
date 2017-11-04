@@ -14,7 +14,7 @@ elseif (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
     $delete_check_run = mysqli_query($connection,$delete_check_query);
     if (mysqli_num_rows($delete_check_run) > 0) {
       # Delete query to delete the user
-      $delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $delete_id;";
+      $delete_query = "DELETE FROM `users` WHERE `id`= $delete_id;";
       if (isset($_SESSION['username']) && $_SESSION['role'] == 'admin') {
         if (mysqli_query($connection,$delete_query)) {
           $msg = "User has been deleted";
@@ -34,15 +34,15 @@ elseif (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
     foreach ($_POST['checkboxes'] as $user_id) {
       $bulk_option = $_POST['bulk-options'];
       if ($bulk_option == 'delete') {
-        $bulk_delete_query = "DELETE FROM `cms`.`users` WHERE `id`= $user_id;";
+        $bulk_delete_query = "DELETE FROM `users` WHERE `id`= $user_id;";
         mysqli_query($connection,$bulk_delete_query);
       }
       elseif ($bulk_option == 'author') {
-        $bulk_author_query = "UPDATE `cms`.`users` SET `role`='author' WHERE `id`= $user_id";
+        $bulk_author_query = "UPDATE `users` SET `role`='author' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_author_query);
       }
       elseif ($bulk_option == 'admin') {
-        $bulk_admin_query = "UPDATE `cms`.`users` SET `role`='admin' WHERE `id`= $user_id";
+        $bulk_admin_query = "UPDATE `users` SET `role`='admin' WHERE `id`= $user_id";
         mysqli_query($connection,$bulk_admin_query);
       }
     }

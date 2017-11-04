@@ -58,7 +58,7 @@ elseif (isset($_SESSION['username']) && $_SESSION['role'] =='author'){
                 else{
                   #Insert user into database
 
-                  $insert_user_query = "INSERT INTO `cms`.`users` (`date`, `first_name`, `last_name`, `username`, `email`, `image`, `passowrd`, `role`) VALUES ('$date', '$first_name', '$last_name', '$username', '$email', '$profile_image', '$password', '$role')";
+                  $insert_user_query = "INSERT INTO `users` (`date`, `first_name`, `last_name`, `username`, `email`, `image`, `passowrd`, `role`) VALUES ('$date', '$first_name', '$last_name', '$username', '$email', '$profile_image', '$password', '$role')";
                   if (mysqli_query($connection,$insert_user_query)) {
                     $msg = "New User Added";
                     move_uploaded_file($profile_image_tmp,"images/$image");
